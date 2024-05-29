@@ -2,13 +2,14 @@ import { IoIosSearch } from "react-icons/io";
 import style from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 
+const notification = () => toast.error("please fill in the fields");
 const SearchBar = ({ onSubmit, setGallery, setPage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const searchQuery = e.currentTarget.elements.search.value;
     if (searchQuery === "") {
-      toast.error("please fill in the fields");
+      notification()
+      return
     }
     
     setPage(1);

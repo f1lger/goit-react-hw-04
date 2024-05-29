@@ -18,7 +18,7 @@ function App() {
   const [value, setValue] = useState("");
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [arrLenght, setArrLenght] = useState(0);
   const [page, setPage] = useState(1);
   const [modalInfo, setModalInfo] = useState(initModalInfo);
@@ -39,13 +39,11 @@ function App() {
       setLoading(true);
       try {
         const res = await fetchImages(value, page);
-        console.log(res);
         setGallery((prev) => [...prev, ...res.results]);
         if (res.results.length === 0) throw new Error("No results found");
         setArrLenght(res.total);
       } catch (error) {
         setError(error);
-        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
@@ -73,7 +71,7 @@ function App() {
       )}
       {loading && <Loader />}
       {error && <ErrorMessage message={error.message} />}
-      {arrLenght > 12 && <LoadMoreBtn loadMore={setPage} currentPage={page} />}
+      {arrLenght > 12 && <LoadMoreBtn loadMore={setPage} />}
 
       {modalInfo.isOpen && (
         <ImageModal
