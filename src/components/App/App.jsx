@@ -5,7 +5,7 @@ import "./App.module.css";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Loader from "../Loader/Loader";
-import ErorMessage from "../ErrorMessage/ErrorMessage";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 
@@ -18,7 +18,7 @@ function App() {
   const [value, setValue] = useState("");
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [eror, setEror] = useState(false);
+  const [error, setError] = useState(false);
   const [arrLenght, setArrLenght] = useState(0);
   const [page, setPage] = useState(1);
   const [modalInfo, setModalInfo] = useState(initModalInfo);
@@ -33,7 +33,7 @@ function App() {
     if (value === "") {
       return;
     }
-    setEror(false);
+    setError(false);
     setLoading(true);
     async function handleSearch() {
       setLoading(true);
@@ -41,9 +41,11 @@ function App() {
         const res = await fetchImages(value, page);
         console.log(res);
         setGallery((prev) => [...prev, ...res.results]);
+        if (res.results.length === 0) throw new Error("No results found");
         setArrLenght(res.total);
       } catch (error) {
-        setEror(true);
+        setError(error);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
@@ -65,14 +67,14 @@ function App() {
         setGallery={setGallery}
         setPage={setPage}
       />
-      {gallery.length > 0 ? (
+
+      {gallery.length > 0 && (
         <ImageGallery galleryList={gallery} onImageClick={handleImageClick} />
-      ) : (
-        <p>Please search something else</p>
       )}
       {loading && <Loader />}
-      {eror && <ErorMessage>Please refresh youre page</ErorMessage>}
+      {error && <ErrorMessage message={error.message} />}
       {arrLenght > 12 && <LoadMoreBtn loadMore={setPage} currentPage={page} />}
+
       {modalInfo.isOpen && (
         <ImageModal
           isOpen={modalInfo.isOpen}
