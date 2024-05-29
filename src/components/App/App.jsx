@@ -19,7 +19,6 @@ function App() {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [arrLenght, setArrLenght] = useState(0);
   const [page, setPage] = useState(1);
   const [modalInfo, setModalInfo] = useState(initModalInfo);
   const scrollToend = useRef();
@@ -33,15 +32,13 @@ function App() {
     if (value === "") {
       return;
     }
-    setError(false);
+    setError(null);
     setLoading(true);
     async function handleSearch() {
-      setLoading(true);
       try {
         const res = await fetchImages(value, page);
         setGallery((prev) => [...prev, ...res.results]);
         if (res.results.length === 0) throw new Error("No results found");
-        setArrLenght(res.total);
       } catch (error) {
         setError(error);
       } finally {
@@ -71,7 +68,7 @@ function App() {
       )}
       {loading && <Loader />}
       {error && <ErrorMessage message={error.message} />}
-      {arrLenght > 12 && <LoadMoreBtn loadMore={setPage} />}
+      {gallery.length > 0 && <LoadMoreBtn loadMore={setPage} />}
 
       {modalInfo.isOpen && (
         <ImageModal
