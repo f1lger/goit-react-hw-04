@@ -1,0 +1,39 @@
+.header{
+  background-color: darkblue;
+  display: flex;
+  justify-content: center;
+}
+.form {
+  width: 300px;
+  border-radius: 20px;
+  padding: 10px 0 10px 0;
+  display: flex;
+  justify-content: center;
+  /* border: 1px solid #fff; */
+}
+.submitBtn {
+  background-color: #fff;
+  border: none;
+}
+.searchIcon {
+  width: 20px;
+  height: 20px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+.submitBtn:hover .searchIcon{
+  width: 25px;
+  height: 25px;
+}
+.searchInput {
+  border: none;
+  width: 400px;
+  background-color: #fff;
+  color: #000;
+}
+.submitBtn:focus,
+.submitBtn:active,
+.searchInput:focus,
+.searchInput:active {
+    outline: none;
+    border: none;
+}

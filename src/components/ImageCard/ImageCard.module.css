@@ -1,0 +1,6 @@
+.imageCard {
+  display: block;
+  width: 300px;
+  height: 350px;
+  object-fit: cover;
+}
