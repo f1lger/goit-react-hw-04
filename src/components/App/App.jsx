@@ -19,10 +19,9 @@ function App() {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(false);
   const [eror, setEror] = useState(false);
-  const [arrLenght, setArrLenght] = useState("");
+  const [arrLenght, setArrLenght] = useState(0);
   const [page, setPage] = useState(1);
   const [modalInfo, setModalInfo] = useState(initModalInfo);
-  
   const scrollToend = useRef();
 
   const handleModalClose = () => setModalInfo(initModalInfo);
@@ -34,14 +33,13 @@ function App() {
     if (value === "") {
       return;
     }
-    console.log(page);
     setEror(false);
     setLoading(true);
     async function handleSearch() {
       setLoading(true);
       try {
         const res = await fetchImages(value, page);
-        console.log(res.results);
+        console.log(res);
         setGallery((prev) => [...prev, ...res.results]);
         setArrLenght(res.total);
       } catch (error) {
@@ -67,10 +65,14 @@ function App() {
         setGallery={setGallery}
         setPage={setPage}
       />
-      <ImageGallery galleryList={gallery} onImageClick={handleImageClick} />
+      {gallery.length > 0 ? (
+        <ImageGallery galleryList={gallery} onImageClick={handleImageClick} />
+      ) : (
+        <p>Please search something else</p>
+      )}
       {loading && <Loader />}
-      {eror && <ErorMessage />}
-      {arrLenght && <LoadMoreBtn loadMore={setPage} currentPage={page} />}
+      {eror && <ErorMessage>Please refresh youre page</ErorMessage>}
+      {arrLenght > 12 && <LoadMoreBtn loadMore={setPage} currentPage={page} />}
       {modalInfo.isOpen && (
         <ImageModal
           isOpen={modalInfo.isOpen}

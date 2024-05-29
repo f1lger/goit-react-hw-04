@@ -7,10 +7,10 @@ const SearchBar = ({ onSubmit, setGallery, setPage }) => {
     e.preventDefault();
 
     const searchQuery = e.currentTarget.elements.search.value;
-    
     if (searchQuery === "") {
       toast.error("please fill in the fields");
     }
+    
     setPage(1);
     setGallery([]);
     onSubmit(searchQuery);
